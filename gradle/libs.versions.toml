@@ -14,7 +14,7 @@ logback = "1.5.18"
 logstashLogbackEncoder = "8.1"
 embeddedPostgres = "2.1.0"
 embeddedPostgresBinaries = "16.15.0"
-shadow = "9.5.1"
+shadow = "9.6.1"
 # OWASP dependency scan, run by CI only when NVD_API_KEY is set
 dependencyCheck = "12.1.3"
 
