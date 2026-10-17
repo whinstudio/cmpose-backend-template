@@ -9,7 +9,7 @@ exposed = "0.61.0"
 flyway = "11.10.4"
 postgresql = "42.7.7"
 hikari = "6.3.0"
-logback = "1.5.18"
+logback = "1.6.5"
 # Newest 8.x on Maven Central, pinned
 logstashLogbackEncoder = "8.1"
 embeddedPostgres = "2.1.0"
