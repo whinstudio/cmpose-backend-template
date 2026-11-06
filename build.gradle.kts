@@ -14,6 +14,7 @@ application { mainClass.set("io.cmpose.backendtemplate.MainKt") }
 dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
+    implementation(platform(libs.netty.bom))
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.call.id)
     implementation(libs.ktor.server.call.logging)
@@ -37,6 +38,13 @@ dependencies {
     testImplementation(libs.ktor.client.content.negotiation)
     testImplementation(libs.embedded.postgres)
     testImplementation(platform(libs.embedded.postgres.bom))
+
+    constraints {
+        // Transitive only. Ktor pulls an older kotlin-reflect than the compiler's, and the JWT libraries an unpatched
+        // jackson-databind; both are raised here so the dependency scan sees the fixed versions.
+        implementation(libs.kotlin.reflect)
+        implementation(libs.jackson.databind)
+    }
 }
 
 tasks.test { useJUnitPlatform() }
@@ -103,7 +111,8 @@ tasks.register<JavaExec>("writeOpenApi") {
     description = "Writes the OpenAPI document to build/openapi/openapi.json"
     classpath = local.runtimeClasspath
     mainClass.set("io.cmpose.backendtemplate.local.OpenApiDumpKt")
-    args(openApiFile.get().asFile.absolutePath)
+    val output = openApiFile // a local: a lambda that reaches the script object breaks the configuration cache
+    argumentProviders.add(CommandLineArgumentProvider { listOf(output.get().asFile.absolutePath) })
     outputs.file(openApiFile)
 }
 
